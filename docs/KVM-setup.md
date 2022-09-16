@@ -40,12 +40,23 @@ yum install qemu-kvm qemu-img virt-manager libvirt libvirt-python libvirt-client
 sudo ip link add br0 type bridge
 ```
 
+### Assign a static IP to the bridge
+```
+sudo ip address add dev br0 192.168.0.90/24
+```
+Verify
+```
+ip addr show br0
+```
+
+
 ### Add ETHERNET interface to the bridge network
 
 If the laptop doesn't have an ethernet interface (no LAN cable), create a virtual one: https://linuxconfig.org/configuring-virtual-network-interfaces-in-linux
 
 Suppose the ethernet interface name is `enp0s29u1u1`
 replace `$ETH_NAME` with the name of the interface (e.g. `enp0s29u1u1` or `eth0`)
+**Warning! br0 must have been assigned the same IP address/Gateway from $ETH_NAME and $ETH_NAME's ipconfig must be cleared prior to this step**
 ```
 sudo ip link set $ETH_NAME up
 sudo ip link set $ETH_NAME master br0
@@ -56,14 +67,7 @@ Verify
 sudo ip link show master br0
 ```
 
-### Assign a static IP to the bridge
-```
-sudo ip address add dev br0 192.168.0.90/24
-```
-Verify
-```
-ip addr show br0
-```
+
 ### Modify file /etc/sysconfig/network-scripts/ifcfg-br0
 
 ```
