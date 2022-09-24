@@ -46,3 +46,10 @@ USERCTL="yes"
 PEERDNS="yes"
 IPV6INIT="no"
 ```
+
+# Twitter_Data_Source.py
+Will generate a text file containing the first 5 tweets acquired from the tweepy API matching the filter ```username = "john"```.
+### TODO:
+- Create a way to access John's API keys without exposing them publically.
+- Determine exactly what needs to be output, and if that should be customizable (from CLI)
+- Determine which filters to use, and if that should be customizable (from CLI)
