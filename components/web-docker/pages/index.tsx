@@ -1,11 +1,29 @@
+import { NextPage } from 'next';
+import os from 'os';
+import { IMachineInfo, MachineInfo } from '../components/MachineInfo/MachineInfo';
 import { Welcome } from '../components/Welcome/Welcome';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 
-export default function HomePage() {
+export const getServerSideProps = async (): Promise<{
+  props: { machineInfo: IMachineInfo };
+}> => {
+  return {
+    props: {
+      machineInfo: {
+        hostname: os.hostname(),
+        mem: os.totalmem(),
+        networkInterfaces: os.networkInterfaces(),
+      },
+    },
+  };
+};
+
+const HomePage: NextPage<{ machineInfo: IMachineInfo }> = (props) => {
   return (
     <>
       <Welcome />
-      <ColorSchemeToggle />
+      <MachineInfo data={props.machineInfo} />
     </>
   );
-}
+};
+
+export default HomePage;
