@@ -44,7 +44,7 @@ export const MachineInfo: FC<IMachineInfoProps> = (props) => {
         <Text weight="bold" component="span" color="gray" variant="gradient">
           Memory:
         </Text>{' '}
-        {(data.mem / 1000000).toLocaleString('en-us')} GB
+        {(data.mem / 1000000000).toLocaleString('en-us')} GB
       </Text>
 
       <Table>
