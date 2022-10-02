@@ -48,11 +48,11 @@ echo "Source image: $img"
 
 new_img="$name.qcow2"
 # make copy of original image
-cp $img $new_img
+sudo cp $img $new_img
 
-virt-customize -a $new_img --root-password password:1234
+sudo virt-customize -a $new_img --root-password password:1234
 
-virt-install --name $name \
+sudo virt-install --name $name \
 --memory $mem \
 --vcpus $cpu \
 --disk $new_img,bus=sata \
