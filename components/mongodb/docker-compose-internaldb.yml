@@ -2,12 +2,14 @@ version: "3.4"
 services:
   mongo1:
     image: mongo
-    command: mongod --noauth --oplogSize 3 --replSet rs1
+    ports:
+      - '27017:27017'
+    command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - mongo_storage1:/data/db
     networks:
-      - net
+      - mongo
     deploy:
       replicas: 1
       placement:
@@ -15,12 +17,12 @@ services:
           - node.labels.mongo.replica == 1
   mongo2:
     image: mongo
-    command: mongod --noauth --oplogSize 3 --replSet rs1
+    command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - mongo_storage2:/data/db
     networks:
-      - net
+      - mongo
     deploy:
       replicas: 1
       placement:
@@ -28,12 +30,12 @@ services:
           - node.labels.mongo.replica == 2
   mongo3:
     image: mongo
-    command: mongod --noauth --oplogSize 3 --replSet rs1
+    command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - mongo_storage3:/data/db
     networks:
-      - net
+      - mongo
     deploy:
       replicas: 1
       placement:
@@ -44,16 +46,16 @@ services:
     restart: always
     depends_on:
       - mongo1
-    networks: 
-      - net
     environment:
-      - ME_CONFIG_MONGODB_SERVER=internaldb_mongo1
+      - ME_CONFIG_MONGODB_URL=mongodb://mongo1,mongo2,mongo3:27017/db?replicaSet=rs1
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
       - VCAP_APP_HOST=0.0.0.0
     ports:
       - '8081:8081'
     volumes: 
       - mongo_storage1:/data/db
+    networks:
+      - mongo
     deploy:
       replicas: 1
       placement:
@@ -61,7 +63,7 @@ services:
           - node.labels.mongo.replica == 1
 
 networks:
-  net:
+  mongo:
     driver: overlay
 
 volumes:
