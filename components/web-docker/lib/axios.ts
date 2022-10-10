@@ -13,7 +13,7 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
 }
 
 export const axios = Axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: window.location.origin,
 });
 
 axios.interceptors.request.use(authRequestInterceptor);
