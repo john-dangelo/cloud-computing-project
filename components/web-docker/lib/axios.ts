@@ -1,4 +1,5 @@
 import Axios, { AxiosRequestConfig } from 'axios';
+import { API_URL } from '../config';
 
 import storage from '../utils/storage';
 
@@ -13,7 +14,7 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
 }
 
 export const axios = Axios.create({
-  baseURL: window.location.origin,
+  baseURL: typeof window !== 'undefined' ? window.location.origin : API_URL,
 });
 
 axios.interceptors.request.use(authRequestInterceptor);
