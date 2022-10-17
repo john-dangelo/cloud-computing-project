@@ -271,3 +271,40 @@ Create a QCOW2 disk format with 10G max size with dynamic allocation
 qemu-img create -f qcow2 -o preallocation=off myimage.qcow2 10G 
 ```
 
+## Enable Virt Manager GUI access on MobaXterm
+```
+sudo xauth add $(xauth -f ~generic/.Xauthority list|tail -1)
+```
+
+## Extend root partition
+On created VM and extended with command
+```
+qemu-img resize disk.qcow2 +50G
+```
+```
+fdisk /dev/sda
+```
+you will get
+```
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048    16777215     8387584   83  Linux
+```
+
+Issue `n` to create a new partition
+Press Enter 4 times to use default values (to the end of disk)
+```
+Partition number (2-4, default 2): 2
+First sector (16777216-121634815, default 16777216):
+Using default value 16777216
+Last sector, +sectors or +size{K,M,G} (16777216-121634815, default 121634815):
+Using default value 121634815
+```
+Issue `w` to write new partition table
+Reboot
+```
+mkfs.ext4 /dev/sda2
+```
+Mount newly created partition to /gluster
+```
+mount /dev/sda2 /gluster
+```
