@@ -5,7 +5,8 @@ For example:
 - Webservice container is running on workernode5 (10.176.67.212) at port 80
 - Docker Swarm lets us access webservice on ANY node in the swarm, so
 we can access the web page at: http://10.176.67.100:80 http://10.176.67.101:80 http://10.176.67.209:80 http://10.176.67.210:80 http://10.176.67.211:80 http://10.176.67.212:80
-- Similarly, we can send REST message to the service by sending it to IP_ADDRESS:PORT
+- Similarly, we can send REST message to the service by sending it to IP_ADDRESS:PORT or HOSTNAME:PORT
+- Example: if the service X is running and exposes port 1234, we can send message to it by POST http://managernode:1234 (or workernode1/workernode2/workernode3/workernode4/workernode5)
 
 # /components/docker-compose.yml
 This is the file that describes our services with its docker images, port mapping, constraints, etc...
