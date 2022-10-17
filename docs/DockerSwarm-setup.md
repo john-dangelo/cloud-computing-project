@@ -65,7 +65,7 @@ docker swarm join-token manager -q
 This is crucial since other nodes need to be able to pull the Docker Images and start containers by themselves.
 We configure to let the `Manager Node` hold the registry, on Manager Node, run:
 ```
-sudo docker service create --name registry --publish 5000:5000 registry:2
+sudo docker service create --name registry --publish 5000:5000 --constraint node.role==manager registry:2
 ```
 
 Make the registry expose HTTP protocol
