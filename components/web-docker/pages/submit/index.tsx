@@ -15,7 +15,7 @@ import { IJobSubmit } from '../api/submit';
 import { IWorkflowAnalysisType, IWorkflowDatasource } from '../../types';
 import { FormRow } from '../../components/Form/FormRow';
 import { useCreateJob } from '../../api/createJob';
-import { useJobStore } from '../stores/jobs';
+import { useJobStore } from '../../stores/jobs';
 
 type JobSubmitForm = {
   datasource: `${IWorkflowDatasource}`;
