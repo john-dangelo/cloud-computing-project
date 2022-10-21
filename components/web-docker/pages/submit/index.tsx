@@ -104,7 +104,7 @@ const SubmitPage: NextPage = () => {
             <Text>Number of Posts</Text>
             <FormRow sx={{ alignItems: 'center', flexDirection: 'row-reverse' }}>
               <TextInput {...form.getInputProps('numberOfPosts')} />
-              <Slider {...form.getInputProps('numberOfPosts')} />
+              <Slider {...form.getInputProps('numberOfPosts')} min={1} />
             </FormRow>
           </FormRow>
           <Button type="submit">Submit</Button>
