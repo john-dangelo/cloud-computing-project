@@ -56,7 +56,7 @@ const SubmitPage: NextPage = () => {
     };
     // console.log(submission);
     const res = await mutateAsync(submission);
-    addJob(res);
+    addJob(res, submission);
     console.log('res', res);
   };
 
