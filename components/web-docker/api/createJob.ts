@@ -5,7 +5,7 @@ import { axios } from '../lib/axios';
 import { MutationConfig } from '../lib/react-query';
 import { IJobSubmit } from '../pages/api/submit';
 
-export const createJob = (body: IJobSubmit): Promise<unknown> =>
+export const createJob = (body: IJobSubmit): Promise<string> =>
   axios.post('/api/submit', body);
 
 type UseCreateJobOptions = {
@@ -15,7 +15,7 @@ type UseCreateJobOptions = {
 export const useCreateJob = ({ config }: UseCreateJobOptions) => {
   // const { addNotification } = useNotificationStore();
 
-  return useMutation<string, unknown, IJobSubmit>({
+  return useMutation({
     onError: () => {
       showNotification({
         message: 'Job creation error.',

@@ -39,7 +39,7 @@ const SubmitPage: NextPage = () => {
     },
   });
   const { mutateAsync, data } = useCreateJob({});
-  const {jobs, addJob} = useJobStore((state) => state);
+  const { jobs, addJob } = useJobStore((state) => state);
   const [datasource, setDatasource] = useState<JobSubmitForm['datasource'] | null>(
     'facebook',
   );
