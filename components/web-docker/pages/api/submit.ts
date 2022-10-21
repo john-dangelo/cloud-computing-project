@@ -42,24 +42,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           newJob = {
             workflowName,
             parameters: `-f ${parameters.numberOfPosts}`,
+            state: 'pending',
           };
           break;
         case 'facebook-statistical':
           newJob = {
             workflowName,
             parameters: `-f ${parameters.numberOfPosts}`,
+            state: 'pending',
           };
           break;
         case 'twitter-sentiment':
           newJob = {
             workflowName,
             parameters: `-t ${parameters.numberOfPosts}`,
+            state: 'pending',
           };
           break;
         case 'twitter-statistical':
           newJob = {
             workflowName,
             parameters: `-t ${parameters.numberOfPosts}`,
+            state: 'pending',
           };
           break;
       }
