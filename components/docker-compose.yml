@@ -73,6 +73,15 @@ services:
       placement:
         constraints:
           - node.labels.webservice == true
+  datafetcher:
+    image: managernode:5000/datafetcher0:0.0.1
+    restart: always
+    ports:
+      - '8082:8082'
+    networks:
+      - mongo
+    deploy:
+      replicas: 1
 
 networks:
   mongo:
