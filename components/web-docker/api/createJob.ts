@@ -15,7 +15,7 @@ type UseCreateJobOptions = {
 export const useCreateJob = ({ config }: UseCreateJobOptions) => {
   // const { addNotification } = useNotificationStore();
 
-  return useMutation({
+  return useMutation<string, unknown, IJobSubmit>({
     onError: () => {
       showNotification({
         message: 'Job creation error.',

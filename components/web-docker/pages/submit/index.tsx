@@ -15,6 +15,7 @@ import { IJobSubmit } from '../api/submit';
 import { IWorkflowAnalysisType, IWorkflowDatasource } from '../../types';
 import { FormRow } from '../../components/Form/FormRow';
 import { useCreateJob } from '../../api/createJob';
+import { useJobStore } from '../stores/jobs';
 
 type JobSubmitForm = {
   datasource: `${IWorkflowDatasource}`;
@@ -37,7 +38,8 @@ const SubmitPage: NextPage = () => {
       numberOfPosts: 50,
     },
   });
-  const mutation = useCreateJob({});
+  const { mutateAsync, data } = useCreateJob({});
+  const {jobs, addJob} = useJobStore((state) => state);
   const [datasource, setDatasource] = useState<JobSubmitForm['datasource'] | null>(
     'facebook',
   );
@@ -45,7 +47,7 @@ const SubmitPage: NextPage = () => {
     'sentiment',
   );
 
-  const handleSubmit = (values: JobSubmitForm) => {
+  const handleSubmit = async (values: JobSubmitForm) => {
     const submission: IJobSubmit = {
       workflowName: `${values.datasource}-${values.analysisType}`,
       parameters: {
@@ -53,7 +55,9 @@ const SubmitPage: NextPage = () => {
       },
     };
     // console.log(submission);
-    mutation.mutate(submission);
+    const res = await mutateAsync(submission);
+    addJob(res);
+    console.log('res', res);
   };
 
   const handleDatasourceSelectChange = (values: JobSubmitForm['datasource']) => {
@@ -65,6 +69,8 @@ const SubmitPage: NextPage = () => {
     setAnalysisType(values);
     form.setFieldValue('analysisType', values);
   };
+
+  console.log('current jobs', jobs);
   return (
     <Layout>
       <form onSubmit={form.onSubmit(handleSubmit)}>

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { z, ZodRawShape } from 'zod';
-import { uuid } from 'uuidv4';
+import { z } from 'zod';
 import { validateSchemaOnRuntime } from '../../utils/validateSchema';
 import { IWorkflowParameters, IWorkflowName } from '../../types/index';
 import { COLLECTIONS, DATABASES } from '../../config/db';
@@ -30,17 +29,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // console.log('db', db);
     // console.log('collection', collection);
     const { body } = req;
-    const validatedForm = await validateSchemaOnRuntime<z.infer<typeof schema>>(
+    const validatedForm = await validateSchemaOnRuntime<IJobDescription>(
       schema,
       body,
       res,
     );
-    const newJob = {
-      jobId: uuid(),
-      ...validatedForm,
-    };
-    const inserted = await collection.insertOne(newJob);
-    res.status(200).send(inserted);
+    if (validatedForm) {
+      const { workflowName, parameters } = validatedForm;
+      let newJob;
+      switch (workflowName) {
+        case 'facebook-sentiment':
+          newJob = {
+            workflowName,
+            parameters: `-f ${parameters.numberOfPosts}`,
+          };
+          break;
+        case 'facebook-statistical':
+          newJob = {
+            workflowName,
+            parameters: `-f ${parameters.numberOfPosts}`,
+          };
+          break;
+        case 'twitter-sentiment':
+          newJob = {
+            workflowName,
+            parameters: `-t ${parameters.numberOfPosts}`,
+          };
+          break;
+        case 'twitter-statistical':
+          newJob = {
+            workflowName,
+            parameters: `-t ${parameters.numberOfPosts}`,
+          };
+          break;
+      }
+      // const newJob = {
+      //   // jobId: uuid(),
+      //   ...validatedForm,
+      // };
+      const inserted = await collection.insertOne(newJob);
+      const { insertedId } = inserted;
+      res.status(200).send(insertedId);
+    }
   } catch (e) {
     res.status(500);
     console.error(e);
