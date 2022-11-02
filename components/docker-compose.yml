@@ -61,10 +61,23 @@ services:
       placement:
         constraints:
           - node.labels.mongo.replica == 1
+  webservice:
+    image: managernode:5000/webservice:1.0.2
+    restart: always
+    ports:
+      - '80:3000'
+    networks:
+      - mongo
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.webservice == true
 
 networks:
   mongo:
     driver: overlay
+    attachable: true
 
 volumes:
   mongo_storage1:

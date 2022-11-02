@@ -1,28 +1,30 @@
+import { Box, Button } from '@mantine/core';
 import { NextPage } from 'next';
-import os from 'os';
-import { IMachineInfo, MachineInfo } from '../components/MachineInfo/MachineInfo';
+import Link from 'next/link';
+import Layout from '../components/Layout';
 import { Welcome } from '../components/Welcome/Welcome';
+import { ROUTES } from '../routes';
 
-export const getServerSideProps = async (): Promise<{
-  props: { machineInfo: IMachineInfo };
-}> => {
-  return {
-    props: {
-      machineInfo: {
-        hostname: os.hostname(),
-        mem: os.totalmem(),
-        networkInterfaces: os.networkInterfaces(),
-      },
-    },
-  };
-};
-
-const HomePage: NextPage<{ machineInfo: IMachineInfo }> = (props) => {
+const HomePage: NextPage = () => {
   return (
-    <>
-      <Welcome />
-      <MachineInfo data={props.machineInfo} />
-    </>
+    <Layout>
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Welcome />
+        <Link href={ROUTES.SUBMIT.href} passHref>
+          <Button size="md" sx={{ width: '200px' }} variant="outline">
+            Submit a workflow
+          </Button>
+        </Link>
+      </Box>
+    </Layout>
   );
 };
 
