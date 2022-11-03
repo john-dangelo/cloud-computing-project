@@ -68,6 +68,8 @@ services:
       - '80:3000'
     networks:
       - mongo
+    volumes:
+      - /mnt:/mnt
     deploy:
       replicas: 1
       placement:
