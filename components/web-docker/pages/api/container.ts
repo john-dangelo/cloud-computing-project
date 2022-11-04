@@ -18,14 +18,19 @@ export const config = {
   },
 };
 
-const getBaseFolder = (userId: string) => `/mnt/${userId}`;
+// const getBaseFolder = (userId: string) => `/mnt/scripts/${userId}`;
+const getBaseFolder = (userId: string) => `F:/test/${userId}`;
 
 const saveFile = async (file: formidable.File, userId: string) => {
   //   console.log('file', file);
   const data = fs.readFileSync(file.filepath);
-  //   console.log('data', data, file.originalFilename);
-  fs.writeFileSync(`${getBaseFolder(userId)}/${file.originalFilename}`, data);
-  await fs.unlinkSync(file.filepath);
+  const baseFolder = getBaseFolder(userId);
+  fs.mkdir(baseFolder, { recursive: true }, (err) => {
+    if (err) throw err;
+    fs.writeFileSync(`${getBaseFolder(userId)}/${file.originalFilename}`, data);
+    fs.unlinkSync(file.filepath);
+    return Promise.resolve();
+  });
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -54,9 +59,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         files as { script: formidable.File; requirements: formidable.File },
       ),
     );
-    // const { body } = req;
-    // console.log('body', body);
-    // res.status(200).send('hehe');
   } catch (e) {
     res.status(500);
     console.error(e);
