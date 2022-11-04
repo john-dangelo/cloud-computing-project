@@ -18,8 +18,8 @@ export const config = {
   },
 };
 
-// const getBaseFolder = (userId: string) => `/mnt/scripts/${userId}`;
-const getBaseFolder = (userId: string) => `F:/test/${userId}`;
+const getBaseFolder = (userId: string) => `/mnt/scripts/${userId}`;
+// const getBaseFolder = (userId: string) => `F:/test/${userId}`;
 
 const saveFile = async (file: formidable.File, userId: string) => {
   //   console.log('file', file);
