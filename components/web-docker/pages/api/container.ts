@@ -19,10 +19,10 @@ export const config = {
   },
 };
 
-// const getBaseFolder = (fields: IContainerCreateForm) =>
-//   `/mnt/scripts/${fields.userId}/${fields.componentName}`;
 const getBaseFolder = (fields: IContainerCreateForm) =>
-  `E:/mnt/scripts/${fields.userId}/${fields.componentName}`;
+  `/mnt/scripts/${fields.userId}/${fields.componentName}`;
+// const getBaseFolder = (fields: IContainerCreateForm) =>
+//   `E:/mnt/scripts/${fields.userId}/${fields.componentName}`;
 
 const saveFile = async (file: formidable.File, baseFolder: string) => {
   //   console.log('file', file);
