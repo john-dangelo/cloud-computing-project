@@ -6,15 +6,17 @@ import { MutationConfig } from '../lib/react-query';
 
 export type IContainerCreateForm = {
   userId: string;
+  componentName: string;
   script: File | null;
   requirements: File | null;
 };
 
 export const createContainer = (body: IContainerCreateForm): Promise<string> => {
-  const { script, requirements, userId } = body;
+  const { script, requirements, userId, componentName } = body;
   const form = new FormData();
   if (!script || !requirements) return Promise.reject();
   form.append('userId', userId);
+  form.append('componentName', componentName);
   form.append('script', script);
   form.append('requirements', requirements);
   return axios.post('/api/container', form);

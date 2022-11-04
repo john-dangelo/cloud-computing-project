@@ -20,6 +20,7 @@ const SubmitPage: NextPage = () => {
   const form = useForm<IContainerCreateForm>({
     initialValues: {
       userId: findOrCreateSessionID(),
+      componentName: 'my-component',
       script: null,
       requirements: null,
     },
@@ -45,6 +46,10 @@ const SubmitPage: NextPage = () => {
           <FormRow className={classes.formRow}>
             <Text>User ID</Text>
             <TextInput {...form.getInputProps('userId')} />
+          </FormRow>
+          <FormRow className={classes.formRow}>
+            <Text>Component name</Text>
+            <TextInput {...form.getInputProps('componentName')} />
           </FormRow>
           <FormRow className={classes.formRow}>
             <Text>Python script (*)</Text>
