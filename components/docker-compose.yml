@@ -17,6 +17,8 @@ services:
           - node.labels.mongo.replica == 1
   mongo2:
     image: mongo
+    ports:
+      - '27018:27017'
     command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -30,6 +32,8 @@ services:
           - node.labels.mongo.replica == 2
   mongo3:
     image: mongo
+    ports:
+      - '27019:27017'
     command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro

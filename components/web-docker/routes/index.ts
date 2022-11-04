@@ -19,6 +19,12 @@ export const ROUTES = {
       pathname: '/submit',
     },
   }),
+  CREATE_CONTAINERS: cs({
+    label: 'Create Containers',
+    href: {
+      pathname: '/create-containers',
+    },
+  }),
   INFO: cs({
     label: 'Info',
     href: {
