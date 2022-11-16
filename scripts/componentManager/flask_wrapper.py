@@ -50,4 +50,4 @@ def send(data):
         output.insert_one({"workflowId":workflowID, "data":data})
     else:
         #otherwise pass the data on
-        requests.post(nextAddress, data)
+        requests.post("localhost:"+nextAddress, data)
