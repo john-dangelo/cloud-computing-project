@@ -8,8 +8,10 @@ Created on Mon Sep 26 13:07:44 2022
 import os
 import json
 import time
+import requests
 from dataclasses import dataclass
 from pymongo import MongoClient
+
 
 
 # Useful for connecting dataclasses with MongoDB
@@ -54,31 +56,26 @@ nextPort = 40000
 #temp, to be replaced by other command
 #os.system("sudo docker run --network internaldb_mongo -it managernode:5000/datafetcher:1.0.2 python dataFetcher.py 1234 -f 15")
 
-# Add the workflow ID as the first parameter after the filename
-def addWfID(parameters, wfID):
-    paramList = parameters.split()
-    newParams = paramList[0] + " " + str(wfID) #paramList[0] is the filename
-    if len(paramList) > 1:
-        for i in paramList[1:]:
-            newParams += " " + i
-    return newParams
+# Send the workflow ID to the first component in a workflow, causing it to start sending data forward
+def sendStartPOST(wfID, port):
+    addr = "localhost:" + port
+    dict = { "workflowID":wfID, "containerAddress":port, "data": {}}
+    response = requests.post(addr, json=dict)
+    print(response)
+
 
 # Start a container running the specified component type and remember its address
 # Pass along id only for data source components (first one in list)
-def startComponent(name, parameters, wfID=None):
+def startComponent(name, parameters):
     global nextID, nextPort
     
     newComp = Component(name, nextID, parameters, nextPort)
     nextID += 1
     nextPort += 1
     
-    if wfID is not None:
-        # Data source, first component, must include wfID in parameter list
-        parameters = addWfID(parameters, wfID)
-    
     docker = "sudo docker service create --restart-condition=none "
     name = "--name " + newComp.containerName + ":latest "
-    network = "--network internaldb_mongo managernode:5000/" + newComp.name + " "
+    network = "--network internaldb_mongo " + newComp.name + " "
     publish = "--publish " + newComp.address + ":1000 "
     python = "python " + parameters
     os.system(docker + name + network + publish + python)
@@ -86,6 +83,8 @@ def startComponent(name, parameters, wfID=None):
     # Get the address and add component to the lists
     activeComponents.append(newComp)
     addressList.append(newComp.address)
+    
+    return newComp.address
 
 # Start each listed component, or increment its degree if it is already running
 # componentsToStart is a list of strings for the name of each component to start
@@ -93,8 +92,11 @@ def startComponents(componentsToStart, parameters, wfID):
     print("startComponents() components to be started:")
     print(componentsToStart)
     
-    # Skip first component since it is data source, and start it last
-    for i in range(1,len(componentsToStart)):
+    # Since the first datasource must be unique it is always started
+    addr1 = startComponent(componentsToStart[0], parameters[0])
+    
+    # Start each component or see if it is already active
+    for i in range(1, len(componentsToStart)):
         # Check the list of active components for the one we want to start
         active = next((x for x in activeComponents if (x.name == componentsToStart[i] and x.parameters == parameters[i])), None)
         
@@ -106,10 +108,8 @@ def startComponents(componentsToStart, parameters, wfID):
             active.degree += 1
             addressList.append(active.address)
         
-    # The first node will be unique and will take the parameters
-    # Wait for all other containers to be started and set up
-    time.sleep(30)
-    startComponent(componentsToStart[0], parameters[0], wfID)
+    # Send start message to the first component
+    sendStartPOST(wfID, addr1)
 
 
 # Main working loop
@@ -157,7 +157,8 @@ while (True):
     
     print("loop")
     
-    if (True):
+    if (False):
         break
+    
     time.sleep(10)
 
