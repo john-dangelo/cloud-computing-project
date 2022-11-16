@@ -123,7 +123,7 @@ while (True):
         output.insert_one({'_id': job['_id'], 'workflowName': job['workflowName'], 'parameters': job['parameters']})
         
         # Get the nodes for the workflow from the workflow definition collection
-        names = workflows.find_one({'workflow-name': job['workflowName']})['nodesNecessary']
+        names = workflows.find_one({'name': job['workflowName']})['nodesNecessary']
         # The address for each component, in order
         addressList = []
         
