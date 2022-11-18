@@ -16,10 +16,13 @@ containerAddress = ""
 
 @app.route("/", methods=['GET','POST'])
 def wrapper_method():
+    print('Request', request)
     if request.method == 'POST':
         workflowID = request.get_json['workflowID']
         containerAddress = request.get_json['containerAddress']
         return container_main(request.get_json['data'])
+    if request.method == 'GET':
+        return "Service is running."
     
 #return next address or -1 if at the end or not found
 def getNextAddress():
