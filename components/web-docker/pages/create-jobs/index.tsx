@@ -171,7 +171,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
                       <Text>{item}</Text>
                       <TextInput
                         withAsterisk
-                        label="Parameter"
+                        label="Command"
                         {...form.getInputProps(`parameters.${index}`)}
                       />
                     </Stack>
