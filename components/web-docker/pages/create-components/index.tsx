@@ -48,8 +48,8 @@ const SubmitPage: NextPage = () => {
   // >('sentiment');
 
   const handleSubmit = async (values: IContainerCreateForm) => {
+    // console.log(values);
     mutate(values);
-    console.log(values);
   };
 
   // table

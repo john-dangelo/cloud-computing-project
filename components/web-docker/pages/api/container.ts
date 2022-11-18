@@ -48,7 +48,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       files: { script: formidable.File; requirements: formidable.File },
     ) => {
       //   await saveFile(files.file);
-      if (!fields.useDockerHub) {
+      // console.log('form fields', fields);
+      const useDockerHub = fields.useDockerHub as unknown as string;
+      if (!(useDockerHub === 'true')) {
         const baseFolder = getBaseFolder(fields);
         await saveFile(files.script, baseFolder);
         await saveFile(files.requirements, baseFolder);

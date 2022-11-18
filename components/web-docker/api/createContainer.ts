@@ -13,13 +13,14 @@ export type IContainerCreateForm = {
 };
 
 export const createContainer = (body: IContainerCreateForm): Promise<string> => {
-  const { script, requirements, userId, componentName } = body;
+  const { script, requirements, userId, componentName, useDockerHub } = body;
   const form = new FormData();
-  if (!script || !requirements) return Promise.reject();
+  // if (!script || !requirements) return Promise.reject();
   form.append('userId', userId);
   form.append('componentName', componentName);
-  form.append('script', script);
-  form.append('requirements', requirements);
+  script && form.append('script', script);
+  requirements && form.append('requirements', requirements);
+  form.append('useDockerHub', String(useDockerHub));
   return axios.post('/api/container', form);
 };
 
