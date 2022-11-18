@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { IJobSubmit } from '../pages/api/submit';
+import { IJobDTO } from '../types';
 
 const DEFAULT_JOB_STATE = {
   result: {
@@ -9,13 +9,13 @@ const DEFAULT_JOB_STATE = {
 
 type Job = {
   result: unknown;
-} & IJobSubmit;
+} & IJobDTO;
 
 type JobState = Record<string, Job>;
 
 type JobStore = {
   jobs: JobState;
-  addJob: (jobId: string, submission: IJobSubmit) => void;
+  addJob: (jobId: string, submission: IJobDTO) => void;
 };
 
 export const useJobStore = create<JobStore>((set) => ({

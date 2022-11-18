@@ -2,13 +2,14 @@ import { showNotification } from '@mantine/notifications';
 import { useMutation } from 'react-query';
 
 import { axios } from '../lib/axios';
-import { MutationConfig } from '../lib/react-query';
+import { MutationConfig, queryClient } from '../lib/react-query';
 
 export type IContainerCreateForm = {
   userId: string;
   componentName: string;
   script: File | null;
   requirements: File | null;
+  useDockerHub?: boolean;
 };
 
 export const createContainer = (body: IContainerCreateForm): Promise<string> => {
@@ -40,6 +41,7 @@ export const useCreateContainer = ({ config }: UsecreateContainerOptions) => {
       showNotification({
         message: 'Container description created successfully.',
       });
+      queryClient.invalidateQueries(['componentlist']);
     },
     ...config,
     mutationFn: createContainer,

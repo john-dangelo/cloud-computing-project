@@ -48,17 +48,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       files: { script: formidable.File; requirements: formidable.File },
     ) => {
       //   await saveFile(files.file);
-      const baseFolder = getBaseFolder(fields);
-      await saveFile(files.script, baseFolder);
-      await saveFile(files.requirements, baseFolder);
-      // save information to database
+      if (!fields.useDockerHub) {
+        const baseFolder = getBaseFolder(fields);
+        await saveFile(files.script, baseFolder);
+        await saveFile(files.requirements, baseFolder);
+        // save information to database
+        const componentDefinition = {
+          component_name: `managernode:5000/${fields.componentName}`,
+          included_files: [files.script.originalFilename],
+          location: baseFolder,
+          status: 'pending',
+        };
+        const insertRes = await collection.insertOne(componentDefinition);
+        return res.status(201).send(insertRes.acknowledged);
+      }
       const componentDefinition = {
         component_name: fields.componentName,
-        included_files: [files.script.originalFilename],
-        location: baseFolder,
-        status: 'pending',
+        included_files: [],
+        location: '',
+        status: 'ready',
       };
-
       const insertRes = await collection.insertOne(componentDefinition);
       return res.status(201).send(insertRes.acknowledged);
     };

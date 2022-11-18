@@ -1,6 +1,15 @@
 import { NextPage } from 'next';
 import { useForm } from '@mantine/form';
-import { Button, createStyles, FileInput, Stack, Text, TextInput } from '@mantine/core';
+import {
+  Button,
+  Checkbox,
+  createStyles,
+  FileInput,
+  Stack,
+  Table,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import Layout from '../../components/Layout';
 import { FormRow } from '../../components/Form/FormRow';
 import { findOrCreateSessionID } from '../../utils/localStorage';
@@ -26,6 +35,7 @@ const SubmitPage: NextPage = () => {
       componentName: 'my-component',
       script: null,
       requirements: null,
+      useDockerHub: false,
     },
   });
   // const { mutateAsync, data } = useCreateJob({});
@@ -42,6 +52,16 @@ const SubmitPage: NextPage = () => {
     console.log(values);
   };
 
+  // table
+  const rows =
+    data &&
+    data.map((item) => (
+      <tr key={item.component_name}>
+        <td>{item.component_name}</td>
+        <td>{item.status}</td>
+      </tr>
+    ));
+
   return (
     <Layout>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -51,20 +71,42 @@ const SubmitPage: NextPage = () => {
             <TextInput {...form.getInputProps('userId')} />
           </FormRow>
           <FormRow className={classes.formRow}>
+            <Text>Use Docker Hub?</Text>
+            <Checkbox {...form.getInputProps('useDockerHub')} />
+          </FormRow>
+          <FormRow className={classes.formRow}>
             <Text>Component name</Text>
             <TextInput {...form.getInputProps('componentName')} />
           </FormRow>
           <FormRow className={classes.formRow}>
             <Text>Python script (*)</Text>
-            <FileInput {...form.getInputProps('script')} accept="text/x-python" />
+            <FileInput
+              {...form.getInputProps('script')}
+              accept="text/x-python"
+              disabled={form.values.useDockerHub}
+            />
           </FormRow>
           <FormRow className={classes.formRow}>
             <Text>requirement.txt (*)</Text>
-            <FileInput {...form.getInputProps('requirements')} accept="text/plain" />
+            <FileInput
+              {...form.getInputProps('requirements')}
+              accept="text/plain"
+              disabled={form.values.useDockerHub}
+            />
           </FormRow>
           <Button type="submit">Submit</Button>
         </Stack>
       </form>
+      <Table captionSide="bottom">
+        <caption>Current components</caption>
+        <thead>
+          <tr>
+            <th>Component name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
     </Layout>
   );
 };
