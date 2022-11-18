@@ -19,6 +19,6 @@ echo RUN pip install -r ./requirement.txt >> dockerfile;
 #Build Image
 sudo docker image build -t $1:latest .;
 #Rename image
-sudo docker image tag $1:latest managernode:5000/$1:latest;
+sudo docker image tag $1:latest $1:latest;
 #Push to image registry
-sudo docker push managernode:5000/$1:latest;
+sudo docker push $1:latest;
