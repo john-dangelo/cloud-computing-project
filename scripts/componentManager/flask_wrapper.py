@@ -51,3 +51,6 @@ def send(data):
     else:
         #otherwise pass the data on
         requests.post("localhost:"+nextAddress, data)
+
+def __main__():
+    app.run(host="localhost", port=8000, debug=True)
