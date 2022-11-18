@@ -48,7 +48,7 @@ while(True):
         clientProgram.close()
         
         requirementsFile = open(location+"/requirement.txt","a")
-        requirementsFile.write("\npymongo==4.3.2\nFlask==2.2.2")
+        requirementsFile.write("\npymongo==4.3.2\nFlask==2.2.2\nrequests")
         requirementsFile.close()
         
         # print("calling command line")
