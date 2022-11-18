@@ -43,6 +43,7 @@ export type IWorkflowDTO = {
 export type IJobDTO = {
   workflowName: string;
   parameters: string[];
+  component_list: string[];
   state: `${STATUSES}`;
 } & BaseEntity;
 

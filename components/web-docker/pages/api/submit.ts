@@ -14,6 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       workflowName: body.workflowName,
       parameters: body.parameters,
       state: body.state,
+      component_list: body.component_list,
     };
     const inserted = await collection.insertOne(newJob);
     const { insertedId } = inserted;

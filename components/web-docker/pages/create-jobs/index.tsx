@@ -70,6 +70,10 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
     //   },
     // };
     // // console.log(submission);
+    // await mutateWorkflow({
+    //   component_list: values.component_list,
+    //   _id: currentWorkflow?._id,
+    // });
     const res = await mutateAsync(values);
     // addJob(res, submission);
     console.log('form data', res);
@@ -96,6 +100,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
       <tr key={item._id}>
         <td>{item.workflowName}</td>
         <td>{item.parameters.join(', ')}</td>
+        <td>{item.component_list?.join(', ')}</td>
         <td>{item.state}</td>
       </tr>
     ));
@@ -124,10 +129,10 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
               const temp = newComponentList[source.index];
               newComponentList[source.index] = newComponentList[destination?.index || 0];
               newComponentList[destination?.index || 0] = temp;
-              await mutateWorkflow({
-                component_list: newComponentList,
-                _id: currentWorkflow?._id,
-              });
+              // await mutateWorkflow({
+              //   component_list: newComponentList,
+              //   _id: currentWorkflow?._id,
+              // });
               setCurrentWorkflow(
                 (current) =>
                   current && {
@@ -183,6 +188,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
           <tr>
             <th>Workflow name</th>
             <th>Parameters</th>
+            <th>Components</th>
             <th>State</th>
           </tr>
         </thead>
