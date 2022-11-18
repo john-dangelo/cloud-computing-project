@@ -98,6 +98,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
     serverJobs &&
     serverJobs.map((item) => (
       <tr key={item._id}>
+        <td>{item._id}</td>
         <td>{item.workflowName}</td>
         <td>{item.parameters.join(', ')}</td>
         <td>{item.component_list?.join(', ')}</td>
@@ -186,6 +187,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
         <caption>Current jobs</caption>
         <thead>
           <tr>
+            <th>JobId</th>
             <th>Workflow name</th>
             <th>Parameters</th>
             <th>Components</th>
