@@ -16,7 +16,8 @@ containerAddress = ""
 
 @app.route("/", methods=['GET','POST'])
 def wrapper_method():
-    print('Request', request)
+    print("Request")
+    print(request)
     if request.method == 'POST':
         workflowID = request.get_json['workflowID']
         containerAddress = request.get_json['containerAddress']
