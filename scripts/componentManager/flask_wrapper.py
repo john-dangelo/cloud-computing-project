@@ -61,7 +61,7 @@ def send(data):
         # for component-to-component communication
         # the request needs to have the ComponentName:ComponentPort format
         # e.g. requests.post("component1:8000", data)
-        requests.post("localhost:"+nextAddress, data)
+        requests.post(nextAddress, data)
 
 if __name__ == '__main__':
     print('Running service...')
