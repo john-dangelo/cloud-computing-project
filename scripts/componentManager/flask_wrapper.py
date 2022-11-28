@@ -23,6 +23,9 @@ def wrapper_method():
         containerAddress = request.get_json['containerAddress']
         return container_main(request.get_json['data'])
     if request.method == 'GET':
+        # test only
+        # print("Making mock request")
+        # print(request.get("localhost:8001").text) # doesnt work
         return "Service is running."
     
 #return next address or -1 if at the end or not found
@@ -54,6 +57,10 @@ def send(data):
         output.insert_one({"workflowId":workflowID, "data":data})
     else:
         #otherwise pass the data on
+        # Triet: after testing, I found out that
+        # for component-to-component communication
+        # the request needs to have the ComponentName:ComponentPort format
+        # e.g. requests.post("component1:8000", data)
         requests.post("localhost:"+nextAddress, data)
 
 if __name__ == '__main__':
