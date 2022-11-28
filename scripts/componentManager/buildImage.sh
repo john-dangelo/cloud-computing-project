@@ -16,6 +16,7 @@ echo WORKDIR /usr/app/src >> dockerfile;
 echo COPY temp.py . >> dockerfile;
 echo COPY requirement.txt . >> dockerfile;
 echo RUN pip install -r ./requirement.txt >> dockerfile;
+echo "RUN apt update -y && apt install net-tools -y" >> dockerfile;
 echo EXPOSE 8000 >> dockerfile;
 #Build Image
 sudo docker image build -t $1:latest .;
