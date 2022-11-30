@@ -21,6 +21,8 @@ def wrapper_method():
     if request.method == 'POST':
         workflowID = request.get_json['workflowID']
         containerAddress = request.get_json['containerAddress']
+        print("Wrapper service received POST request")
+        print(request.get_json)
         return container_main(request.get_json['data'])
     if request.method == 'GET':
         # test only
