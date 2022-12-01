@@ -24,7 +24,10 @@ def wrapper_method():
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request")
         print(json)
-        return container_main(json['data'])
+        result = container_main(json['data']);
+        if (result == None):
+            return "Error"
+        return result
     if request.method == 'GET':
         # test only
         # print("Making mock request")
