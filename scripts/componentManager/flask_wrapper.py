@@ -25,7 +25,7 @@ def wrapper_method():
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request")
         print(json)
-        result = component.container_main(json['data'])
+        result = component.container_main(json['data'], send)
         if (result == None):
             return "Error"
         return result
