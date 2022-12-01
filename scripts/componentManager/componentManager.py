@@ -26,26 +26,26 @@ while(True):
         for file in component['included_files']:
             files += location+"/"+file
         
-        #  add script to the top of the file
-        dataflowWrapper = open("flask_wrapper.py","r")
-        dataflowRawText = dataflowWrapper.read()
-        dataflowWrapper.close()
+        # #  add script to the top of the file
+        # dataflowWrapper = open("flask_wrapper.py","r")
+        # dataflowRawText = dataflowWrapper.read()
+        # dataflowWrapper.close()
 
-        clientProgram = open(files, "r")
-        clientProgramText = clientProgram.read()
-        clientProgram.close()
+        # clientProgram = open(files, "r")
+        # clientProgramText = clientProgram.read()
+        # clientProgram.close()
 
-        clientProgram = open(files,"w")
-        clientProgram.write(
-        # "\n###########################################################################"+
-        # "\n##                        DATA FLOW WRAPPER SCRIPT                       ##" +
-        # "\n###########################################################################\n\n" + 
-        dataflowRawText + "\n" +
-        # "\n\n###########################################################################"+
-        # "\n##                        END OF DATA FLOW WRAPPER                       ##" +
-        # "\n###########################################################################\n\n" + 
-        clientProgramText)
-        clientProgram.close()
+        # clientProgram = open(files,"w")
+        # clientProgram.write(
+        # # "\n###########################################################################"+
+        # # "\n##                        DATA FLOW WRAPPER SCRIPT                       ##" +
+        # # "\n###########################################################################\n\n" + 
+        # dataflowRawText + "\n" +
+        # # "\n\n###########################################################################"+
+        # # "\n##                        END OF DATA FLOW WRAPPER                       ##" +
+        # # "\n###########################################################################\n\n" + 
+        # clientProgramText)
+        # clientProgram.close()
         
         requirementsFile = open(location+"/requirement.txt","a")
         requirementsFile.write("\npymongo==4.3.2\nFlask==2.2.2\nrequests")

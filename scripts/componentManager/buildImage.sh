@@ -7,14 +7,16 @@
 #
 #Build docker file
 #Pre-copy scripts
-cp $2 ./temp.py;
+$COMPONENT_NAME=component.py
+cp $2 ./$COMPONENT_NAME;
 cp $3 ./requirement.txt;
 # chmod 775 -R ./;
 echo FROM python:latest > dockerfile;
 echo LABEL Maintainer="compManager" >> dockerfile;
 echo WORKDIR /usr/app/src >> dockerfile;
-echo COPY temp.py . >> dockerfile;
+echo COPY $COMPONENT_NAME . >> dockerfile;
 echo COPY requirement.txt . >> dockerfile;
+echo COPY flask_wrapper.py . >> dockerfile;
 echo RUN pip install -r ./requirement.txt >> dockerfile;
 echo "RUN apt update -y && apt install net-tools -y" >> dockerfile;
 echo "RUN apt install iputils-ping -y" >> dockerfile;
