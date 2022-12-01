@@ -7,7 +7,7 @@
 #
 #Build docker file
 #Pre-copy scripts
-$COMPONENT_NAME=component.py
+$COMPONENT_NAME=component.py;
 cp $2 ./$COMPONENT_NAME;
 cp $3 ./requirement.txt;
 # chmod 775 -R ./;
