@@ -1,5 +1,6 @@
 from flask import Flask, request
 from pymongo import MongoClient
+import sys
 import requests
 import component
 
@@ -23,8 +24,8 @@ def wrapper_method():
         json = request.get_json()
         workflowID = json['workflowID']
         containerAddress = json['containerAddress']
-        print("Wrapper service received POST request")
-        print(json)
+        print("Wrapper service received POST request", sys.stdout)
+        print(json, sys.stdout)
         result = component.container_main(json['data'], send)
         if (result == None):
             return "Error"
