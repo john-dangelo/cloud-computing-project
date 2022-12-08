@@ -1,5 +1,6 @@
 from flask import Flask, request
 from pymongo import MongoClient
+from pymongo import ObjectId
 from datetime import datetime
 import sys
 import requests
@@ -42,7 +43,7 @@ def wrapper_method():
     
 #return next address or -1 if at the end or not found
 def getNextAddress():
-    activeJob = activeJobList.find_one({'_id':workflowID})
+    activeJob = activeJobList.find_one({'_id': ObjectId(workflowID)})
     nextAddress = -1
     workflowComponents = activeJob['component_addresses']
     #look for the address
