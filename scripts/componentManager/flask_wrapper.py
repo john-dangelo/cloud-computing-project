@@ -1,5 +1,6 @@
 from flask import Flask, request
 from pymongo import MongoClient
+from datetime import datetime
 import sys
 import requests
 import component
@@ -12,8 +13,9 @@ activeJobList = workflowDB['active_job_list']
 
 resultDB = client['results']
 output = resultDB['output']
+log = resultDB['log']
 
-workflowID = 0
+workflowID = "0"
 containerAddress = ""
 
 @app.route("/", methods=['GET','POST'])
@@ -22,7 +24,7 @@ def wrapper_method():
     print(request)
     if request.method == 'POST':
         json = request.get_json()
-        workflowID = json['workflowID']
+        workflowID = json['workflowId']
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request", sys.stdout)
         print(json, sys.stdout)
@@ -54,12 +56,17 @@ def getNextAddress():
     #no match found
     return nextAddress
 
+def log_data(wfID,currAdd,nextAdd,data):
+    log.insert_one({"workflowId":wfID, "currentAddress": currAdd, "nextAddress":nextAdd, "data":data,"timestamp":datetime.now()})
+    return True
+
 def send(data):
     nextAddress = getNextAddress()
     package = {}
-    package.update({"workflowID" : workflowID})
+    package.update({"workflowId" : workflowID})
     package.update({"containerAddress": nextAddress })
     package.update({"data": data})
+    log_data(workflowID,containerAddress,nextAddress,data)
     #end or not found
     if(nextAddress == -1):
         output.insert_one({"workflowId":workflowID, "data":data})
@@ -69,7 +76,7 @@ def send(data):
         # for component-to-component communication
         # the request needs to have the ComponentName:ComponentPort format
         # e.g. requests.post("component1:8000", data)
-        requests.post(nextAddress, data)
+        requests.post(nextAddress, package)
 
 if __name__ == '__main__':
     print('Running service...')
