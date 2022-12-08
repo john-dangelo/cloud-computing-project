@@ -4,4 +4,4 @@ def container_main(data, send):
     processed_data = data
     # send data to the next component
     send({"my_message": "hello from component 2"})
-    return True
+    return "Component 2 finished processing"
