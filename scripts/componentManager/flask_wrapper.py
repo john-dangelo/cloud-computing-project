@@ -51,7 +51,7 @@ def getNextAddress():
         #found a match for the current address
         if(workflowComponents[compAddressIndex] == containerAddress):
             #check if its the last node
-            if(compAddressIndex == len(workflowComponents) ):
+            if(compAddressIndex == (len(workflowComponents) - 1) ):
                 return -1
             #otherwise, return the next address
             return workflowComponents[compAddressIndex +1]
@@ -79,7 +79,7 @@ def send(data):
         # for component-to-component communication
         # the request needs to have the ComponentName:ComponentPort format
         # e.g. requests.post("component1:8000", data)
-        requests.post(nextAddress, package)
+        requests.post(nextAddress, json=package)
 
 if __name__ == '__main__':
     print('Running service...')
