@@ -37,4 +37,16 @@ export const ROUTES = {
       pathname: '/info',
     },
   }),
+  JOB_INFO: cs({
+    label: 'Job info',
+    href: {
+      pathname: '/job',
+    },
+  }),
+  JOB_RESULT: cs({
+    label: 'Job result',
+    href: {
+      pathname: '/result',
+    },
+  }),
 } as const;

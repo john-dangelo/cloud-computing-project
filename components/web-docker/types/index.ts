@@ -51,6 +51,19 @@ export type IJobSubmitForm = Omit<IJobDTO, '_id'> & {
   component_list: IWorkflowDTO['component_list'];
 };
 
+export type ILogDTO = {
+  workflowId: string;
+  currentAddress: string;
+  nextAddress: string;
+  data: Record<string, unknown>;
+  timestamp: string;
+} & BaseEntity;
+
+export type IResultDTO = {
+  workflowId: string;
+  data: Record<string, unknown>;
+} & BaseEntity;
+
 export type BaseEntity = {
   _id: string;
 };

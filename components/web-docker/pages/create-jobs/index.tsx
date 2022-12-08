@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { DragHandleDots2Icon } from '@modulz/radix-icons';
+import Link from 'next/link';
 import Layout from '../../components/Layout';
 import { IJobSubmitForm, IWorkflowDTO } from '../../types';
 import { FormRow } from '../../components/Form/FormRow';
@@ -24,6 +25,7 @@ import { getAllWorkflows } from '../../api/getWorkflows';
 import { DraggableFormItems } from '../../components/Form/DraggableFormItems';
 import { useUpdateWorkflow } from '../../api/updateWorkflow';
 import { useGetAllJobs } from '../../api/getJobs';
+import { ROUTES } from '../../routes';
 
 const useStyles = createStyles(() => ({
   formRow: {
@@ -98,7 +100,9 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
     serverJobs &&
     serverJobs.map((item) => (
       <tr key={item._id}>
-        <td>{item._id}</td>
+        <td>
+          <Link href={`${ROUTES.JOB_INFO.href.pathname}/${item._id}`}>{item._id}</Link>
+        </td>
         <td>{item.workflowName}</td>
         <td>{item.parameters.join(', ')}</td>
         <td>{item.component_list?.join(', ')}</td>
