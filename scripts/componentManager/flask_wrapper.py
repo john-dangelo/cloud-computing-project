@@ -24,6 +24,8 @@ def wrapper_method():
     print(request)
     if request.method == 'POST':
         json = request.get_json()
+        global workflowID
+        global containerAddress
         workflowID = json['workflowId']
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request", sys.stdout)
