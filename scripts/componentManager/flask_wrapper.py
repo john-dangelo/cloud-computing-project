@@ -35,7 +35,7 @@ def wrapper_method():
         print("Wrapper service received POST request", sys.stdout)
         print(json, sys.stdout)
         #check for end of data and re-route if recieved
-        log_data(workflowID,containerAddress, "Received POST Request", json['data'])
+        # log_data(workflowID,containerAddress, "Received POST Request", json['data'])
         if(json['data'] == eodMessage):
             send(eodMessage)
             return "Completed"
