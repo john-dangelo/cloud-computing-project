@@ -39,7 +39,7 @@ def wrapper_method():
         if(json['data'] == eodMessage):
             send(eodMessage)
             return "Completed"
-        result = component.container_main(json['data'], send)
+        result = component.container_main(json['data'], send, sys.argv)
         if (result == None):
             return "Error"
         return result
