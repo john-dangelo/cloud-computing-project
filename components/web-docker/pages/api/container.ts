@@ -24,12 +24,12 @@ const getBaseFolder = (fields: IContainerCreateForm) =>
 // const getBaseFolder = (fields: IContainerCreateForm) =>
 //   `E:/mnt/scripts/${fields.userId}/${fields.componentName}`;
 
-const saveFile = async (file: formidable.File, baseFolder: string) => {
+const saveFile = async (file: formidable.File, filename: string, baseFolder: string) => {
   //   console.log('file', file);
   const data = fs.readFileSync(file.filepath);
   fs.mkdir(baseFolder, { recursive: true }, (err) => {
     if (err) throw err;
-    fs.writeFileSync(`${baseFolder}/${file.originalFilename}`, data);
+    fs.writeFileSync(`${baseFolder}/${filename}`, data);
     fs.unlinkSync(file.filepath);
     return Promise.resolve();
   });
@@ -52,17 +52,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const useDockerHub = fields.useDockerHub as unknown as string;
       if (!(useDockerHub === 'true')) {
         const baseFolder = getBaseFolder(fields);
-        await saveFile(files.script, baseFolder);
-        await saveFile(files.requirements, baseFolder);
+        const scriptFilename = files.script?.originalFilename || 'script.py';
+        await saveFile(files.script, scriptFilename, baseFolder);
+        await saveFile(files.requirements, 'requirement.txt', baseFolder);
         // save information to database
         const componentDefinition = {
           component_name: `managernode:5000/${fields.componentName}`,
-          included_files: [files.script.originalFilename],
+          included_files: [scriptFilename],
           location: baseFolder,
           status: 'pending',
         };
         const insertRes = await collection.insertOne(componentDefinition);
         return res.status(201).send(insertRes.acknowledged);
+        // return res.status(200).send('haha');
       }
       const componentDefinition = {
         component_name: fields.componentName,

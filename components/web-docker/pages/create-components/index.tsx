@@ -70,10 +70,10 @@ const SubmitPage: NextPage = () => {
             <Text>User ID</Text>
             <TextInput {...form.getInputProps('userId')} />
           </FormRow>
-          <FormRow className={classes.formRow}>
+          {/* <FormRow className={classes.formRow}>
             <Text>Use Docker Hub?</Text>
             <Checkbox {...form.getInputProps('useDockerHub')} />
-          </FormRow>
+          </FormRow> */}
           <FormRow className={classes.formRow}>
             <Text>Component name</Text>
             <TextInput {...form.getInputProps('componentName')} />
