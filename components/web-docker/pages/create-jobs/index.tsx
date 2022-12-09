@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { DragHandleDots2Icon } from '@modulz/radix-icons';
+import { DragHandleDots2Icon, ArrowRightIcon } from '@modulz/radix-icons';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
 import { IJobSubmitForm, IWorkflowDTO } from '../../types';
@@ -59,9 +59,9 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
     },
   });
   const { mutateAsync, data } = useCreateJob({});
-  const { mutate: mutateWorkflow } = useUpdateWorkflow({});
+  // const { mutate: mutateWorkflow } = useUpdateWorkflow({});
   const { data: serverJobs } = useGetAllJobs({});
-  const { jobs, addJob } = useJobStore((state) => state);
+  // const { jobs, addJob } = useJobStore((state) => state);
   const [currentWorkflow, setCurrentWorkflow] = useState<IWorkflowDTO | undefined>();
 
   const handleSubmit = async (values: IJobSubmitForm) => {
@@ -89,7 +89,7 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
       setCurrentWorkflow(workflow);
       form.setFieldValue(
         'parameters',
-        workflow.component_list.map(() => ''),
+        workflow.component_list.map(() => 'python flask_wrapper.py'),
       );
       form.setFieldValue('component_list', workflow.component_list);
     }
@@ -179,6 +179,11 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
                         {...form.getInputProps(`parameters.${index}`)}
                       />
                     </Stack>
+                    {index !== form.values.component_list.length - 1 && (
+                      <Center>
+                        <ArrowRightIcon />
+                      </Center>
+                    )}
                   </Group>
                 )}
               </Draggable>
