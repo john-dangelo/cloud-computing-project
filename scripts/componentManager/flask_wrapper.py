@@ -29,6 +29,7 @@ def wrapper_method():
         json = request.get_json()
         global workflowID
         global containerAddress
+        global eodMessage
         workflowID = json['workflowId']
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request", sys.stdout)
@@ -70,6 +71,7 @@ def log_data(wfID,currAdd,nextAdd,data):
     return True
 
 def send(data):
+    global eodMessage
     nextAddress = getNextAddress()
     package = {}
     package.update({"workflowId" : workflowID})

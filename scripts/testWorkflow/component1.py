@@ -9,6 +9,6 @@ def container_main(data, send):
     # send data to the next component
     for i in range(0, 10):
         time.sleep(1)
-        send({ "data": "Hello from component 1: " + i})    
+        send({ "data": "Hello from component 1: " + str(i)})    
     send("~~EOD~~")
     return "Component 1 finished processing"
