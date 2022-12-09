@@ -19,6 +19,8 @@ log = resultDB['log']
 workflowID = "0"
 containerAddress = ""
 
+eodMessage = "~~EOD~~"
+
 @app.route("/", methods=['GET','POST'])
 def wrapper_method():
     print("Request")
@@ -31,6 +33,10 @@ def wrapper_method():
         containerAddress = json['containerAddress']
         print("Wrapper service received POST request", sys.stdout)
         print(json, sys.stdout)
+        #check for end of data and re-route if recieved
+        if(json['data'] == eodMessage):
+            send(eodMessage)
+            return "Completed"
         result = component.container_main(json['data'], send)
         if (result == None):
             return "Error"
@@ -72,7 +78,10 @@ def send(data):
     log_data(workflowID,containerAddress,nextAddress,data)
     #end or not found
     if(nextAddress == -1):
-        output.insert_one({"workflowId":workflowID, "data":data})
+        if(data == eodMessage):
+            setWFtoDone()
+        else:
+            output.insert_one({"workflowId":workflowID, "data":data})
     else:
         #otherwise pass the data on
         # Triet: after testing, I found out that
@@ -80,6 +89,10 @@ def send(data):
         # the request needs to have the ComponentName:ComponentPort format
         # e.g. requests.post("component1:8000", data)
         requests.post(nextAddress, json=package)
+
+def setWFtoDone():
+    newVal = {"$set":{"state":"done"}}
+    activeJobList.update_one({'_id': ObjectId(workflowID)},newVal)
 
 if __name__ == '__main__':
     print('Running service...')

@@ -3,5 +3,5 @@ def container_main(data, send):
     # Process data
     processed_data = data
     # send data to the next component
-    send({"my_message": "hello from component 1"})
+    send("~~EOD~~")
     return "Component 1 finished processing"
