@@ -31,10 +31,5 @@ def emitPostsTwitter(postsRequested,send):
 ##################### Data emission above ###########################
     
 #if we implement parameter passing, add args here
-def container_main(data, send,args):
-    emitPostsTwitter(600,send)
-
-def send(data):
-    print(data)
-
-container_main(1,send,2)
+def container_main(data, send):
+    emitPostsTwitter(120,send)
