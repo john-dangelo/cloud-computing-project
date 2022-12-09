@@ -25,8 +25,12 @@ const useStyles = createStyles(() => ({
 const SubmitPage: NextPage = () => {
   const { classes } = useStyles();
   const { mutate } = useCreateContainer({});
-  const { data } = useGetAllComponent({});
-  console.log('data', data);
+  const { data } = useGetAllComponent({
+    config: {
+      refetchInterval: 1000,
+    },
+  });
+  // console.log('data', data);
   // const [value, setValue] = useState<File | null>(null);
 
   const form = useForm<IContainerCreateForm>({

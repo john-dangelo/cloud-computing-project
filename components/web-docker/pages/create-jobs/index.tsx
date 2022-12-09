@@ -60,7 +60,11 @@ const SubmitPage: NextPage<CreateJobsProps> = (props) => {
   });
   const { mutateAsync, data } = useCreateJob({});
   // const { mutate: mutateWorkflow } = useUpdateWorkflow({});
-  const { data: serverJobs } = useGetAllJobs({});
+  const { data: serverJobs } = useGetAllJobs({
+    config: {
+      refetchInterval: 1000,
+    },
+  });
   // const { jobs, addJob } = useJobStore((state) => state);
   const [currentWorkflow, setCurrentWorkflow] = useState<IWorkflowDTO | undefined>();
 
