@@ -5,7 +5,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 nltk.download('vader_lexicon')
 sia = SentimentIntensityAnalyzer()
 
-def container_main(data,send):
+def container_main(data, send, args):
 	sia = SentimentIntensityAnalyzer()
 	scores = sia.polarity_scores(data)
 	final_data={"post":data,"scores":scores}

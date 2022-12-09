@@ -4,7 +4,7 @@ numberOfPosts = 0
 averageScores ={"positive":0,"neutral":0,"negative":0}
 
 
-def container_main(data,send):
+def container_main(data, send, args):
     post = data['post']
     score = data['scores']
     

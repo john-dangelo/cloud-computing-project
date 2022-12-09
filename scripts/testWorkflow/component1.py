@@ -9,7 +9,7 @@ def container_main(data, send, args):
     processed_data = data
     # send data to the next component
     end = 10
-    if (args[1]):
+    if (len(args) > 1):
         end = int(args[1])
     for i in range(0, end):
         time.sleep(1)
