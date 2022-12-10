@@ -66,7 +66,7 @@ services:
         constraints:
           - node.labels.mongo.replica == 1
   webservice:
-    image: managernode:5000/webservice:1.0.6
+    image: managernode:5000/webservice:1.1.2
     restart: always
     ports:
       - '80:3000'
