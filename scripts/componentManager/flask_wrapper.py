@@ -16,9 +16,6 @@ resultDB = client['results']
 output = resultDB['output']
 log = resultDB['log']
 
-workflowID = "0"
-containerAddress = ""
-
 eodMessage = "~~EOD~~"
 
 @app.route("/", methods=['GET','POST'])
@@ -27,8 +24,6 @@ def wrapper_method():
     print(request)
     if request.method == 'POST':
         json = request.get_json()
-        global workflowID
-        global containerAddress
         global eodMessage
         workflowID = json['workflowId']
         containerAddress = json['containerAddress']
@@ -37,9 +32,9 @@ def wrapper_method():
         #check for end of data and re-route if recieved
         # log_data(workflowID,containerAddress, "Received POST Request", json['data'])
         if(json['data'] == eodMessage):
-            send(eodMessage)
+            createSend(workflowID, containerAddress)(eodMessage)
             return "Completed"
-        result = component.container_main(json['data'], send, sys.argv)
+        result = component.container_main(json['data'], createSend(workflowID, containerAddress), sys.argv)
         if (result == None):
             return "Error"
         return result
@@ -50,7 +45,7 @@ def wrapper_method():
         return "Service is running."
     
 #return next address or -1 if at the end or not found
-def getNextAddress():
+def getNextAddress(workflowID, containerAddress):
     activeJob = activeJobList.find_one({'_id': ObjectId(workflowID)})
     nextAddress = -1
     workflowComponents = activeJob['component_addresses']
@@ -71,29 +66,31 @@ def log_data(wfID,currAdd,nextAdd,data):
     log.insert_one({"workflowId":wfID, "currentAddress": currAdd, "nextAddress":nextAdd, "data":data,"timestamp":datetime.now()})
     return True
 
-def send(data):
-    global eodMessage
-    nextAddress = getNextAddress()
-    package = {}
-    package.update({"workflowId" : workflowID})
-    package.update({"containerAddress": nextAddress })
-    package.update({"data": data})
-    log_data(workflowID,containerAddress,nextAddress,data)
-    #end or not found
-    if(nextAddress == -1):
-        if(data == eodMessage):
-            setWFtoDone()
+def createSend(workflowID, containerAddress):
+    def send(data):
+        global eodMessage
+        nextAddress = getNextAddress(workflowID, containerAddress)
+        package = {}
+        package.update({"workflowId" : workflowID})
+        package.update({"containerAddress": nextAddress })
+        package.update({"data": data})
+        log_data(workflowID,containerAddress,nextAddress,data)
+        #end or not found
+        if(nextAddress == -1):
+            if(data == eodMessage):
+                setWFtoDone(workflowID)
+            else:
+                output.insert_one({"workflowId":workflowID, "data":data})
         else:
-            output.insert_one({"workflowId":workflowID, "data":data})
-    else:
-        #otherwise pass the data on
-        # Triet: after testing, I found out that
-        # for component-to-component communication
-        # the request needs to have the ComponentName:ComponentPort format
-        # e.g. requests.post("component1:8000", data)
-        requests.post(nextAddress, json=package)
+            #otherwise pass the data on
+            # Triet: after testing, I found out that
+            # for component-to-component communication
+            # the request needs to have the ComponentName:ComponentPort format
+            # e.g. requests.post("component1:8000", data)
+            requests.post(nextAddress, json=package)
+    return send
 
-def setWFtoDone():
+def setWFtoDone(workflowID):
     newVal = {"$set":{"state":"done"}}
     activeJobList.update_one({'_id': ObjectId(workflowID)},newVal)
 
