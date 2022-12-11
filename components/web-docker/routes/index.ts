@@ -13,16 +13,40 @@ export const ROUTES = {
       pathname: '/',
     },
   }),
-  SUBMIT: cs({
-    label: 'Submit',
+  CREATE_JOBS: cs({
+    label: 'Create jobs',
     href: {
-      pathname: '/submit',
+      pathname: '/create-jobs',
+    },
+  }),
+  CREATE_WORKFLOWS: cs({
+    label: 'Create workflows',
+    href: {
+      pathname: '/create-workflows',
+    },
+  }),
+  CREATE_CONTAINERS: cs({
+    label: 'Create components',
+    href: {
+      pathname: '/create-components',
     },
   }),
   INFO: cs({
     label: 'Info',
     href: {
       pathname: '/info',
+    },
+  }),
+  JOB_INFO: cs({
+    label: 'Job info',
+    href: {
+      pathname: '/job',
+    },
+  }),
+  JOB_RESULT: cs({
+    label: 'Job result',
+    href: {
+      pathname: '/result',
     },
   }),
 } as const;

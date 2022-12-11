@@ -2,10 +2,10 @@ import { showNotification } from '@mantine/notifications';
 import { useMutation } from 'react-query';
 
 import { axios } from '../lib/axios';
-import { MutationConfig } from '../lib/react-query';
-import { IJobSubmit } from '../pages/api/submit';
+import { MutationConfig, queryClient } from '../lib/react-query';
+import { IJobSubmitForm } from '../types';
 
-export const createJob = (body: IJobSubmit): Promise<string> =>
+export const createJob = (body: IJobSubmitForm): Promise<string> =>
   axios.post('/api/submit', body);
 
 type UseCreateJobOptions = {
@@ -26,6 +26,7 @@ export const useCreateJob = ({ config }: UseCreateJobOptions) => {
       showNotification({
         message: 'Job created successfully.',
       });
+      queryClient.invalidateQueries(['joblist']);
     },
     ...config,
     mutationFn: createJob,

@@ -14,7 +14,8 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
 }
 
 export const axios = Axios.create({
-  baseURL: typeof window !== 'undefined' ? window.location.origin : API_URL,
+  baseURL:
+    typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000',
 });
 
 axios.interceptors.request.use(authRequestInterceptor);

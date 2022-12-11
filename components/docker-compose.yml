@@ -17,6 +17,8 @@ services:
           - node.labels.mongo.replica == 1
   mongo2:
     image: mongo
+    ports:
+      - '27018:27017'
     command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -30,6 +32,8 @@ services:
           - node.labels.mongo.replica == 2
   mongo3:
     image: mongo
+    ports:
+      - '27019:27017'
     command: mongod --noauth --replSet rs1
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -62,12 +66,14 @@ services:
         constraints:
           - node.labels.mongo.replica == 1
   webservice:
-    image: managernode:5000/webservice:1.0.2
+    image: managernode:5000/webservice:1.1.2
     restart: always
     ports:
       - '80:3000'
     networks:
       - mongo
+    volumes:
+      - /mnt:/mnt
     deploy:
       replicas: 1
       placement:

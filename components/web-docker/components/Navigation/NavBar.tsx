@@ -43,9 +43,29 @@ function NavBar(props: INavBarProps) {
         </NavLabel>
       </Link>
       <Divider {...dividerProps} />
-      <Link key={ROUTES.SUBMIT.label} href={ROUTES.SUBMIT.href} passHref>
+      <Link key={ROUTES.CREATE_JOBS.label} href={ROUTES.CREATE_JOBS.href} passHref>
         <NavLabel isDropdown={isDropdown} closeBurger={closeBurger}>
-          {ROUTES.SUBMIT.label}
+          {ROUTES.CREATE_JOBS.label}
+        </NavLabel>
+      </Link>
+      <Divider {...dividerProps} />
+      <Link
+        key={ROUTES.CREATE_WORKFLOWS.label}
+        href={ROUTES.CREATE_WORKFLOWS.href}
+        passHref
+      >
+        <NavLabel isDropdown={isDropdown} closeBurger={closeBurger}>
+          {ROUTES.CREATE_WORKFLOWS.label}
+        </NavLabel>
+      </Link>
+      <Divider {...dividerProps} />
+      <Link
+        key={ROUTES.CREATE_CONTAINERS.label}
+        href={ROUTES.CREATE_CONTAINERS.href}
+        passHref
+      >
+        <NavLabel isDropdown={isDropdown} closeBurger={closeBurger}>
+          {ROUTES.CREATE_CONTAINERS.label}
         </NavLabel>
       </Link>
       <Divider {...dividerProps} />

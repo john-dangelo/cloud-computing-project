@@ -7,18 +7,23 @@
 #
 #Build docker file
 #Pre-copy scripts
-cp $2 ./temp.py;
+COMPONENT_NAME=component.py;
+cp $2 ./$COMPONENT_NAME;
 cp $3 ./requirement.txt;
 # chmod 775 -R ./;
 echo FROM python:latest > dockerfile;
 echo LABEL Maintainer="compManager" >> dockerfile;
 echo WORKDIR /usr/app/src >> dockerfile;
-echo COPY temp.py . >> dockerfile;
+echo COPY $COMPONENT_NAME . >> dockerfile;
 echo COPY requirement.txt . >> dockerfile;
+echo COPY flask_wrapper.py . >> dockerfile;
 echo RUN pip install -r ./requirement.txt >> dockerfile;
+echo "RUN apt update -y && apt install net-tools -y" >> dockerfile;
+echo "RUN apt install iputils-ping -y" >> dockerfile;
+echo EXPOSE 8000 >> dockerfile;
 #Build Image
 sudo docker image build -t $1:latest .;
 #Rename image
-sudo docker image tag $1:latest managernode:5000/$1:latest;
+sudo docker image tag $1:latest $1:latest;
 #Push to image registry
-sudo docker push managernode:5000/$1:latest;
+sudo docker push $1:latest;

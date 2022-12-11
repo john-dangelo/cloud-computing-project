@@ -18,9 +18,9 @@ const HomePage: NextPage = () => {
         }}
       >
         <Welcome />
-        <Link href={ROUTES.SUBMIT.href} passHref>
+        <Link href={ROUTES.CREATE_JOBS.href} passHref>
           <Button size="md" sx={{ width: '200px' }} variant="outline">
-            Submit a workflow
+            Submit a job
           </Button>
         </Link>
       </Box>
